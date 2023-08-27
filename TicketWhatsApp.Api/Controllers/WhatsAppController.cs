@@ -11,6 +11,10 @@ public class WhatsAppController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> HandleWebhook(PositusRequest request)
   {
-    return Ok(new HandleWebhookResponse { });
+    if (!ModelState.IsValid)
+    {
+      return BadRequest(new HandleWebhookResponse("Verifique os parâmetros enviados."));
+    }
+    return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));
   }
 }

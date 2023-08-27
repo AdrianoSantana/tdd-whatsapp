@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketWhatsApp.Api\TicketWhatsApp.Api.csproj" />
+    <ProjectReference Include="..\TicketWhatsApp.Domain\TicketWhatsApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>

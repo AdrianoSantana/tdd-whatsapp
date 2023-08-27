@@ -156,3 +156,5 @@
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api.Tests/bin/Debug/net6.0/runtimes/win/lib/net6.0/System.Management.dll
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api.Tests/bin/Debug/net6.0/TicketWhatsApp.Api.dll
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api.Tests/bin/Debug/net6.0/TicketWhatsApp.Api.pdb
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api.Tests/bin/Debug/net6.0/TicketWhatsApp.Domain.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api.Tests/bin/Debug/net6.0/TicketWhatsApp.Domain.pdb

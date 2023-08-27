@@ -25,3 +25,5 @@
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/obj/Debug/net6.0/TicketWhatsApp.Api.pdb
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/obj/Debug/net6.0/TicketWhatsApp.Api.genruntimeconfig.cache
 /home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/obj/Debug/net6.0/ref/TicketWhatsApp.Api.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/bin/Debug/net6.0/TicketWhatsApp.Domain.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/bin/Debug/net6.0/TicketWhatsApp.Domain.pdb
