@@ -7,16 +7,18 @@ namespace TicketWhatsApp.Api.Tests
 {
   public class WhatsAppControllerTest
   {
+    private readonly WhatsAppController _sut;
+    private readonly PositusRequest _request;
     public WhatsAppControllerTest()
     {
-
+      _sut = new WhatsAppController();
+      _request = new PositusRequest { };
     }
+
     [Fact]
     public async void Should_Return_Http_Success_With_correct_params()
     {
-      var sut = new WhatsAppController();
-      var request = new PositusRequest { };
-      var result = await sut.HandleWebhook(request);
+      var result = await _sut.HandleWebhook(_request);
       result.ShouldBeOfType(typeof(OkObjectResult));
 
       var OkResponseResult = result as BadRequestObjectResult;
@@ -27,12 +29,9 @@ namespace TicketWhatsApp.Api.Tests
     [Fact]
     public async void Should_Return_Bad_Request_If_Incorrect_params()
     {
-      var sut = new WhatsAppController();
-      var request = new PositusRequest { };
+      _sut.ModelState.AddModelError("Key", "ErrorMessage");
 
-      sut.ModelState.AddModelError("Key", "ErrorMessage");
-
-      var result = await sut.HandleWebhook(request);
+      var result = await _sut.HandleWebhook(_request);
       result.ShouldBeOfType(typeof(BadRequestObjectResult));
 
       var badRequestResult = result as BadRequestObjectResult;
