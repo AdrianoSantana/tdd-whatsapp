@@ -1,0 +1,12 @@
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/bin/Debug/net6.0/TicketWhatsApp.Domain.deps.json
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/bin/Debug/net6.0/TicketWhatsApp.Domain.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/bin/Debug/net6.0/TicketWhatsApp.Domain.pdb
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.csproj.AssemblyReference.cache
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.AssemblyInfoInputs.cache
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.AssemblyInfo.cs
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.csproj.CoreCompileInputs.cache
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/refint/TicketWhatsApp.Domain.dll
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/TicketWhatsApp.Domain.pdb
+/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/obj/Debug/net6.0/ref/TicketWhatsApp.Domain.dll

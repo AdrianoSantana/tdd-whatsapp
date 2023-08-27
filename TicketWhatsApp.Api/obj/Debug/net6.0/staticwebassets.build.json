@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "X9EDalZu6ziy+lX6neUvN3PUVAkm8H6Vo4TSUcxLXv0=",
+  "Source": "TicketWhatsApp.Api",
+  "BasePath": "_content/TicketWhatsApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
