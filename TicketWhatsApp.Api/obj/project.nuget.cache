@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6VUU7QVGb952XnrBacT0jZ/Z0fd5kX/X0/p67nQvBfJN51uytrvzRi4vNLmvUHm6hJNWvMLb5Gx9brY9lOytmg==",
+  "dgSpecHash": "4t/Ejvabm+HEB89kl5qP3eryR7rTC/NxEP9xpdb9C1n7jX5XJYG5M9hjnk+ciA0Kcsd/TAt0XJZoImxi4CIquw==",
   "success": true,
   "projectFilePath": "/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Api/TicketWhatsApp.Api.csproj",
   "expectedPackageFiles": [

@@ -72,6 +72,16 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "TicketWhatsApp.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/TicketWhatsApp.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TicketWhatsApp.Domain.dll": {}
+        }
       }
     }
   },
@@ -200,11 +210,17 @@
         "swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "TicketWhatsApp.Domain/1.0.0": {
+      "type": "project",
+      "path": "../TicketWhatsApp.Domain/TicketWhatsApp.Domain.csproj",
+      "msbuildProject": "../TicketWhatsApp.Domain/TicketWhatsApp.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Swashbuckle.AspNetCore >= 6.2.3"
+      "Swashbuckle.AspNetCore >= 6.2.3",
+      "TicketWhatsApp.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -231,7 +247,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/TicketWhatsApp.Domain.csproj": {
+              "projectPath": "/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Domain/TicketWhatsApp.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
