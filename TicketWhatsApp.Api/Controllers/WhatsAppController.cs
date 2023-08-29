@@ -23,7 +23,15 @@ public class WhatsAppController : ControllerBase
     {
       return BadRequest(new HandleWebhookResponse("Verifique os parâmetros enviados."));
     }
-    var message = new Message { };
+
+    var message = new Message
+    {
+      From = request.Messages[0].From,
+      Name = request.Contacts[0].Profile?.Name ?? "BOT",
+      Text = request.Messages[0].text.Body,
+      To = request.Contacts[0].WaId
+    };
+
     _handleWebhookService.Execute(message);
     return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));
   }

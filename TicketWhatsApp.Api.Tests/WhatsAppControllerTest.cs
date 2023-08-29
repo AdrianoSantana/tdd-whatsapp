@@ -5,6 +5,7 @@ using TicketWhatsApp.Api.DTOs;
 using Moq;
 using TicketWhatsApp.Domain.Interfaces;
 using TicketWhatsApp.Domain.Models.Core;
+using TicketWhatsApp.Domain.Models.Positus;
 
 namespace TicketWhatsApp.Api.Tests
 {
@@ -13,7 +14,6 @@ namespace TicketWhatsApp.Api.Tests
     private readonly WhatsAppController _sut;
     private readonly PositusRequest _request;
     private readonly Mock<IHandleWebhookService> _handleWebhookService;
-
     private readonly Message _message;
     private readonly TicketMessage _ticketMessage;
 
@@ -21,7 +21,24 @@ namespace TicketWhatsApp.Api.Tests
     {
       _handleWebhookService = new Mock<IHandleWebhookService>();
       _sut = new WhatsAppController(_handleWebhookService.Object);
-      _request = new PositusRequest { };
+      _request = new PositusRequest
+      {
+        Messages = new List<PositusMessage>() {
+          new PositusMessage {
+            From = "from_number",
+            text = new MessageText { Body = "Lorem Ipsum "},
+            Id = "any_id",
+            Type = "text",
+            Timestamp = "any_time"
+          },
+        },
+        Contacts = new List<PositusContact>() {
+          new PositusContact {
+            Profile = new PositusProfile { Name = "user_name "},
+            WaId = "consumer_number"
+          }
+        }
+      };
       _message = new Message { };
       _ticketMessage = new TicketMessage { };
 
@@ -62,7 +79,39 @@ namespace TicketWhatsApp.Api.Tests
     [Fact]
     public async void Should_Call_HandleWebHookService_With_Correct_Params()
     {
+      Message? receivedMessage = null;
 
+      _handleWebhookService.Setup(x => x.Execute(It.IsAny<Message>()))
+      .Callback<Message>((Message m) =>
+      {
+        receivedMessage = m;
+      });
+
+      await _sut.HandleWebhook(_request);
+      receivedMessage.From.ShouldBe(_request.Messages[0].From);
+      receivedMessage.Name.ShouldBe(_request.Contacts[0].Profile?.Name);
+      receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
+      receivedMessage.To.ShouldBe(_request.Contacts[0].WaId);
+    }
+
+    [Fact]
+    public async void Should_Call_HandleWebHookService_With_BOT_Profile_Name_If_Profile_is_null()
+    {
+      Message? receivedMessage = null;
+
+      _handleWebhookService.Setup(x => x.Execute(It.IsAny<Message>()))
+      .Callback<Message>((Message m) =>
+      {
+        receivedMessage = m;
+      });
+
+      _request.Contacts[0].Profile = null;
+
+      await _sut.HandleWebhook(_request);
+      receivedMessage.From.ShouldBe(_request.Messages[0].From);
+      receivedMessage.Name.ShouldBe("BOT");
+      receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
+      receivedMessage.To.ShouldBe(_request.Contacts[0].WaId);
     }
   }
 }
