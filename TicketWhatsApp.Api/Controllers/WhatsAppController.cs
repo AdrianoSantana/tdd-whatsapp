@@ -32,7 +32,7 @@ public class WhatsAppController : ControllerBase
       To = request.Contacts[0].WaId
     };
 
-    _handleWebhookService.Execute(message);
+    await _handleWebhookService.Execute(message);
     return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));
   }
 }

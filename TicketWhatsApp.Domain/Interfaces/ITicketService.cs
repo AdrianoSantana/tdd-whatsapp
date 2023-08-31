@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TicketWhatsApp.Domain.Models.Core;
 
 namespace TicketWhatsApp.Domain.Interfaces;
-public interface IHandleWebhookService
+public interface ITicketService
 {
-  Task<TicketMessage> Execute(Message message);
+  Task<Ticket> GetByUserPhone(string phone);
 }

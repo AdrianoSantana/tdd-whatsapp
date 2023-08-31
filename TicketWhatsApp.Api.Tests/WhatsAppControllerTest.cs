@@ -42,7 +42,7 @@ namespace TicketWhatsApp.Api.Tests
       _message = new Message { };
       _ticketMessage = new TicketMessage { };
 
-      _handleWebhookService.Setup(x => x.Execute(_message)).Returns(_ticketMessage);
+      _handleWebhookService.Setup(x => x.Execute(_message)).ReturnsAsync(_ticketMessage);
     }
 
     [Fact]
