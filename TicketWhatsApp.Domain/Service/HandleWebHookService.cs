@@ -12,7 +12,11 @@ public class HandleWebHookService : IHandleWebhookService
   }
   public async Task<TicketMessage> Execute(Message message)
   {
-    var lastTicket = _ticketService.GetByUserPhone(message.From);
+    var lastTicket = await _ticketService.GetByUserPhone(message.From);
+    if (lastTicket is null)
+    {
+      await _ticketService.CreateTicket(new TicketMessage { });
+    }
     return new TicketMessage { };
   }
 }

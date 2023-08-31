@@ -7,5 +7,6 @@ using TicketWhatsApp.Domain.Models.Core;
 namespace TicketWhatsApp.Domain.Interfaces;
 public interface ITicketService
 {
-  Task<Ticket> GetByUserPhone(string phone);
+  Task<Ticket?> GetByUserPhone(string phone);
+  Task<Ticket> CreateTicket(TicketMessage ticketMessage);
 }

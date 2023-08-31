@@ -8,21 +8,17 @@ namespace TicketWhatsApp.Domain.Tests;
 
 public class HandleWebHookServiceTest
 {
-  [Fact]
-  public async void Should_Call_Get_Ticket_By_User_Phone_With_Correct_Params()
-  {
-    var ticketService = new Mock<ITicketService>();
-    string? userPhone = null;
+  private readonly Mock<ITicketService> _ticketService;
+  private readonly IHandleWebhookService _sut;
 
-    ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
-    .Callback<string>((uph) =>
-    {
-      userPhone = uph;
-    })
+  private readonly Message _message;
+  public HandleWebHookServiceTest()
+  {
+    _ticketService = new Mock<ITicketService>();
+    _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
     .ReturnsAsync(new Ticket { });
 
-    IHandleWebhookService sut = new HandleWebHookService(ticketService.Object);
-    var message = new Message
+    _message = new Message
     {
       From = "from_user",
       Name = "user_name",
@@ -30,8 +26,33 @@ public class HandleWebHookServiceTest
       To = "to_user"
     };
 
-    sut.Execute(message);
+    _sut = new HandleWebHookService(_ticketService.Object);
+  }
 
-    userPhone.ShouldBe(message.From);
+  [Fact]
+  public async void Should_Call_Get_Ticket_By_User_Phone_With_Correct_Params()
+  {
+    string? userPhone = null;
+
+    _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
+    .Callback<string>((uph) =>
+    {
+      userPhone = uph;
+    })
+    .ReturnsAsync(new Ticket { });
+
+    await _sut.Execute(_message);
+    userPhone.ShouldBe(_message.From);
+  }
+
+  [Fact]
+  public async void Should_Call_Create_Ticket_If_No_Ticket_Found_It()
+  {
+    _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
+    .ReturnsAsync(null as Ticket);
+
+    await _sut.Execute(_message);
+
+    _ticketService.Verify(x => x.CreateTicket(It.IsAny<TicketMessage>()), Times.Exactly(1));
   }
 }
