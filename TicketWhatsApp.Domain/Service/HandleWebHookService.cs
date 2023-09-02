@@ -5,18 +5,22 @@ namespace TicketWhatsApp.Domain.Service;
 public class HandleWebHookService : IHandleWebhookService
 {
   private readonly ITicketService _ticketService;
+  private readonly IMessageRepository _messageRepository;
 
-  public HandleWebHookService(ITicketService ticketService)
+  public HandleWebHookService(ITicketService ticketService, IMessageRepository messageRepository)
   {
     _ticketService = ticketService;
+    _messageRepository = messageRepository;
   }
   public async Task<TicketMessage> Execute(Message message)
   {
-    var lastTicket = await _ticketService.GetByUserPhone(message.From);
-    if (lastTicket is null)
-    {
-      await _ticketService.CreateTicket(new TicketMessage { });
-    }
-    return new TicketMessage { };
+    var ticketMessage = new TicketMessage(null, message.From, message.To, message.Text, message.Name);
+
+    Ticket? ticket = await _ticketService.GetByUserPhone(message.From);
+    if (ticket is null)
+      ticket = await _ticketService.CreateTicket(ticketMessage);
+
+    await _messageRepository.Save(message, ticket);
+    return ticketMessage;
   }
 }

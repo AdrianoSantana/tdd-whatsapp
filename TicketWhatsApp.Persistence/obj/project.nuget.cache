@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CWrJ6a9MjQ5x/07tr4tVUvEO7fm3FZ8GLFW17nag+i/Xu0qX5W64Xla3Z3zpB4FZgVg4eXIIVdIbwK85gjTL9Q==",
+  "dgSpecHash": "yhD6XkfhVrcJXyppfS1H0MEZBrUar4hOgxRnHD8dZq50HLg2jg57w/owol54rF/6zL/br3m9p+5G+gcGyOQkTw==",
   "success": true,
   "projectFilePath": "/home/adrianosantana/Estudos/dotnet/tdd-whatsapp/TicketWhatsApp/TicketWhatsApp.Persistence/TicketWhatsApp.Persistence.csproj",
   "expectedPackageFiles": [],

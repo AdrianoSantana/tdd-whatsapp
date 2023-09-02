@@ -39,8 +39,8 @@ namespace TicketWhatsApp.Api.Tests
           }
         }
       };
-      _message = new Message { };
-      _ticketMessage = new TicketMessage { };
+      _message = new Message("user_phone", "to_phone", "message", "user_name");
+      _ticketMessage = new TicketMessage("ticket_id", "user_phone", "to_phone", "message", "user_name");
 
       _handleWebhookService.Setup(x => x.Execute(_message)).ReturnsAsync(_ticketMessage);
     }
@@ -88,6 +88,9 @@ namespace TicketWhatsApp.Api.Tests
       });
 
       await _sut.HandleWebhook(_request);
+
+      receivedMessage.ShouldNotBeNull();
+
       receivedMessage.From.ShouldBe(_request.Messages[0].From);
       receivedMessage.Name.ShouldBe(_request.Contacts[0].Profile?.Name);
       receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
@@ -108,6 +111,9 @@ namespace TicketWhatsApp.Api.Tests
       _request.Contacts[0].Profile = null;
 
       await _sut.HandleWebhook(_request);
+
+      receivedMessage.ShouldNotBeNull();
+
       receivedMessage.From.ShouldBe(_request.Messages[0].From);
       receivedMessage.Name.ShouldBe("BOT");
       receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
