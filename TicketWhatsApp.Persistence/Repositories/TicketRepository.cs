@@ -18,15 +18,7 @@ public class TicketRepository : ITicketRepository
 
   public async Task<Ticket?> GetById(string id)
   {
-    try
-    {
-      return await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id);
-    }
-    catch (System.Exception)
-    {
-
-      throw;
-    }
+    return await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id);
   }
 
   public async Task<Ticket> Save(Ticket ticket)
