@@ -11,9 +11,10 @@ public class TicketService : ITicketService
   {
     _repository = repository;
   }
-  public Task<Ticket> CreateTicket(TicketMessage ticketMessage)
+  public async Task<Ticket> CreateTicket(TicketMessage ticketMessage)
   {
-    throw new NotImplementedException();
+    Ticket ticket = new Ticket(new Guid().ToString(), ticketMessage.From, ticketMessage.Text, DateTime.Now, DateTime.Now);
+    return await _repository.Save(ticket);
   }
 
   public async Task<Ticket?> GetByUserPhone(string phone)
