@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TicketWhatsApp.Domain\TicketWhatsApp.Domain.csproj" />
+    <ProjectReference Include="..\TicketWhatsApp.Persistence\TicketWhatsApp.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
