@@ -16,7 +16,10 @@ public class TicketServiceTest
     _ticketRepository = new Mock<ITicketRepository>();
 
     _ticketRepository.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
-    .ReturnsAsync(_ticket);
+    .ReturnsAsync(new List<Ticket>() {
+      _ticket,
+      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now, DateTime.Now),
+    });
 
     sut = new TicketService(_ticketRepository.Object);
   }
@@ -31,7 +34,7 @@ public class TicketServiceTest
     {
       expectedUserPhone = userPhone;
     })
-    .ReturnsAsync(createMockTicket());
+    .ReturnsAsync(new List<Ticket>() { createMockTicket() });
 
     await sut.GetByUserPhone("valid_phone");
 
@@ -73,10 +76,10 @@ public class TicketServiceTest
   }
 
   [Fact]
-  public async void Should_return_null_if_no_ticket_was_found_it()
+  public async void Should_return_null_if_repository_returns_empty_list()
   {
     _ticketRepository.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
-    .ReturnsAsync(null as Ticket);
+    .ReturnsAsync(new List<Ticket>());
 
     var result = await sut.GetByUserPhone("invalid_phone");
 

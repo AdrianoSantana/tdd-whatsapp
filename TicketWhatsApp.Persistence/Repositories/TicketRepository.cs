@@ -17,7 +17,7 @@ public class TicketRepository : ITicketRepository
     return await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id);
   }
 
-  public Task<Ticket?> GetByUserPhone(string phone)
+  public Task<List<Ticket>> GetByUserPhone(string phone)
   {
     throw new NotImplementedException();
   }

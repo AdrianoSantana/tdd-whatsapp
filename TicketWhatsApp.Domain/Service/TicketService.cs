@@ -19,6 +19,7 @@ public class TicketService : ITicketService
 
   public async Task<Ticket?> GetByUserPhone(string phone)
   {
-    return await _repository.GetByUserPhone(phone);
+    var tickets = await _repository.GetByUserPhone(phone);
+    return tickets.FirstOrDefault();
   }
 }

@@ -5,5 +5,5 @@ public interface ITicketRepository
 {
   Task<Ticket> Save(Ticket ticket);
   Task<Ticket?> GetById(string id);
-  Task<Ticket?> GetByUserPhone(string phone);
+  Task<List<Ticket>> GetByUserPhone(string phone);
 }
