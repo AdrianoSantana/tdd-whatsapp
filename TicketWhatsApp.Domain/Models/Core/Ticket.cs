@@ -4,6 +4,10 @@ namespace TicketWhatsApp.Domain.Models.Core;
 
 public class Ticket
 {
+  public Ticket()
+  {
+
+  }
   public Ticket(
     string id,
     string consumerPhone,

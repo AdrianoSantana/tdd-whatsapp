@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketWhatsApp.Domain.Models.Core;
 using TicketWhatsApp.Persistence.Repositories;
 using Shouldly;
+using TicketWhatsApp.Domain.Enums;
 
 namespace TicketWhatsApp.Persistence.Tests;
 
@@ -15,7 +16,7 @@ public class TicketRepositoryTest
 
     using var context = new TicketWhatsAppDbContext(dbOptions);
     var myGuid = new Guid();
-    await context.AddAsync(new Ticket(myGuid.ToString(), "81995029086", "Hello", DateTime.Now, DateTime.Now));
+    await context.AddAsync(new Ticket(myGuid.ToString(), "81995029086", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
     await context.SaveChangesAsync();
 
     var sut = new TicketRepository(context);
