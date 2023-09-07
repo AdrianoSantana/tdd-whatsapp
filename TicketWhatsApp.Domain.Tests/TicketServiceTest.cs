@@ -1,5 +1,6 @@
 using Moq;
 using Shouldly;
+using TicketWhatsApp.Domain.Enums;
 using TicketWhatsApp.Domain.Interfaces;
 using TicketWhatsApp.Domain.Models.Core;
 using TicketWhatsApp.Domain.Service;
@@ -18,7 +19,9 @@ public class TicketServiceTest
     _ticketRepository.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
     .ReturnsAsync(new List<Ticket>() {
       _ticket,
-      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now, DateTime.Now),
+      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), TicketStatusId.Finished),
+      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now.AddDays(2), DateTime.Now.AddDays(3), TicketStatusId.Finished),
+      new Ticket(new Guid().ToString(), "another_consumer_phone", "last_message", DateTime.Now, DateTime.Now),
     });
 
     sut = new TicketService(_ticketRepository.Object);
@@ -36,10 +39,10 @@ public class TicketServiceTest
     })
     .ReturnsAsync(new List<Ticket>() { createMockTicket() });
 
-    await sut.GetByUserPhone("valid_phone");
+    await sut.GetByUserPhone("consumer_phone");
 
     expectedUserPhone.ShouldNotBeNull();
-    expectedUserPhone.ShouldBe("valid_phone");
+    expectedUserPhone.ShouldBe("consumer_phone");
     _ticketRepository.Verify(x => x.GetByUserPhone(It.IsAny<string>()), Times.Exactly(1));
   }
 
@@ -65,17 +68,6 @@ public class TicketServiceTest
   }
 
   [Fact]
-  public async void Should_return_ticket_if_ticket_was_found_it()
-  {
-    var result = await sut.GetByUserPhone("valid_phone");
-
-    result.ShouldNotBeNull();
-    result.ConsumerPhone.ShouldBe(_ticket.ConsumerPhone);
-    result.Id.ShouldBe(_ticket.Id);
-    result.LastConsumerMessage.ShouldBe(_ticket.LastConsumerMessage);
-  }
-
-  [Fact]
   public async void Should_return_null_if_repository_returns_empty_list()
   {
     _ticketRepository.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
@@ -86,8 +78,20 @@ public class TicketServiceTest
     result.ShouldBeNull();
   }
 
+  [Fact]
+  public async void Should_get_last_and_finished_ticket_when_repository_returns_a_list_of_tickets()
+  {
+    var result = await sut.GetByUserPhone("consumer_phone");
+
+    result.ShouldNotBeNull();
+    result.LastConsumerMessage.ShouldBe("last_message");
+    result.ConsumerPhone.ShouldBe("consumer_phone");
+    result.CreatedAt.Day.ShouldBe(DateTime.Now.AddDays(2).Day);
+    result.UpdatedAt.Day.ShouldBe(DateTime.Now.AddDays(3).Day);
+  }
+
   private static Ticket createMockTicket()
   {
-    return new Ticket(new Guid().ToString(), "valid_phone", "Hello", DateTime.Now, DateTime.Now);
+    return new Ticket(new Guid().ToString(), "consumer_phone", "Hello", DateTime.Now, DateTime.Now);
   }
 }

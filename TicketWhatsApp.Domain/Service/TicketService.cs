@@ -1,3 +1,4 @@
+using TicketWhatsApp.Domain.Enums;
 using TicketWhatsApp.Domain.Interfaces;
 using TicketWhatsApp.Domain.Models.Core;
 
@@ -13,13 +14,15 @@ public class TicketService : ITicketService
   }
   public async Task<Ticket> CreateTicket(TicketMessage ticketMessage)
   {
-    Ticket ticket = new Ticket(new Guid().ToString(), ticketMessage.From, ticketMessage.Text, DateTime.Now, DateTime.Now);
+    Ticket ticket = new(new Guid().ToString(), ticketMessage.From, ticketMessage.Text, DateTime.Now, DateTime.Now);
     return await _repository.Save(ticket);
   }
 
   public async Task<Ticket?> GetByUserPhone(string phone)
   {
     var tickets = await _repository.GetByUserPhone(phone);
-    return tickets.FirstOrDefault();
+    var finishedTickets = tickets.FindAll(x => x.StatusId == TicketStatusId.Finished);
+    finishedTickets = finishedTickets.OrderBy(x => x.CreatedAt).ToList();
+    return finishedTickets.LastOrDefault();
   }
 }
