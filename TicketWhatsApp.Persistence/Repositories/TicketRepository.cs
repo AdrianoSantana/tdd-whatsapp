@@ -24,6 +24,8 @@ public class TicketRepository : ITicketRepository
 
   public async Task<Ticket> Save(Ticket ticket)
   {
-    throw new NotImplementedException();
+    _context.Tickets.Add(ticket);
+    await _context.SaveChangesAsync();
+    return ticket;
   }
 }

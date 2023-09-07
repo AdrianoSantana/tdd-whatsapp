@@ -86,4 +86,26 @@ public class TicketRepositoryTest
     result.ShouldBeEmpty();
     result.Count.ShouldBe(0);
   }
+
+  [Fact]
+  public async void Should_save_ticket_in_database()
+  {
+    var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
+    using var context = new TicketWhatsAppDbContext(dbOptions);
+
+    var sut = new TicketRepository(context);
+    var id = Guid.NewGuid().ToString();
+    var result = await sut.Save(
+      new Ticket(
+        id, "consumer_phone", "last_message",
+        DateTime.Now, DateTime.Now
+      )
+    );
+
+    result.ShouldNotBeNull();
+    result.Id.ShouldBe(id);
+    result.ConsumerPhone.ShouldBe("consumer_phone");
+    result.LastConsumerMessage.ShouldBe("last_message");
+
+  }
 }
