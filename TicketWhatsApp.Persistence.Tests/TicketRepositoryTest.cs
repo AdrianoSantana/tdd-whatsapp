@@ -63,6 +63,27 @@ public class TicketRepositoryTest
     result.ShouldNotBeNull();
     result.ShouldNotBeEmpty();
     result.Count.ShouldBe(2);
+  }
 
+  [Fact]
+  public async void Should_return_an_empty_list_of_tickets_if_no_user_phone()
+  {
+    var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
+    using var context = new TicketWhatsAppDbContext(dbOptions);
+
+    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "another_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "other_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+
+
+    await context.SaveChangesAsync();
+
+    var sut = new TicketRepository(context);
+    var result = await sut.GetByUserPhone("invalid_phone");
+
+    result.ShouldNotBeNull();
+    result.ShouldBeEmpty();
+    result.Count.ShouldBe(0);
   }
 }
