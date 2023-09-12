@@ -26,8 +26,9 @@ public class TicketService : ITicketService
     return notFinishedTickets.LastOrDefault();
   }
 
-  public Task UpdateLastMessage(Guid id, string text)
+  public async Task UpdateLastMessage(Guid id, string text)
   {
-    throw new NotImplementedException();
+    await _repository.UpdateLastMessage(id, text);
+    return;
   }
 }

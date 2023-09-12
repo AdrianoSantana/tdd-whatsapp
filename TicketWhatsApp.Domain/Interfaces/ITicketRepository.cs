@@ -6,4 +6,6 @@ public interface ITicketRepository
   Task<Ticket> Save(Ticket ticket);
   Task<Ticket?> GetById(Guid id);
   Task<List<Ticket>> GetByUserPhone(string phone);
+
+  Task UpdateLastMessage(Guid id, string text);
 }

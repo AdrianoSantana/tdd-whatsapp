@@ -108,4 +108,16 @@ public class TicketRepositoryTest
     result.LastConsumerMessage.ShouldBe("last_message");
 
   }
+
+  [Fact]
+  public async void Should_update_ticket_last_message()
+  {
+    var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
+    using var context = new TicketWhatsAppDbContext(dbOptions);
+
+    var myGuid = Guid.NewGuid();
+    await context.AddAsync(new Ticket(myGuid, "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.SaveChangesAsync();
+    var sut = new TicketRepository(context);
+  }
 }

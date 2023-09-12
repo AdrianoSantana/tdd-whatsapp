@@ -28,4 +28,9 @@ public class TicketRepository : ITicketRepository
     await _context.SaveChangesAsync();
     return ticket;
   }
+
+  public Task UpdateLastMessage(Guid id, string text)
+  {
+    throw new NotImplementedException();
+  }
 }

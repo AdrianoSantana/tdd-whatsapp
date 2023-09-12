@@ -90,6 +90,28 @@ public class TicketServiceTest
     result.UpdatedAt.Day.ShouldBe(DateTime.Now.Day);
   }
 
+  [Fact]
+  public async void Should_Call_Ticket_Repository_update_Last_Message_With_Correct_Params()
+  {
+    string? message = null;
+    Guid? guid = null;
+
+    _ticketRepository.Setup(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()))
+    .Callback<Guid, string>((i, m) =>
+    {
+      message = m;
+      guid = i;
+    });
+
+    await sut.UpdateLastMessage(_ticket.Id, "new_message");
+
+    guid.ShouldNotBeNull();
+    message.ShouldNotBeNull();
+    guid.ShouldBe(_ticket.Id);
+    message.ShouldBe("new_message");
+    _ticketRepository.Verify(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+  }
+
   private static Ticket createMockTicket()
   {
     return new Ticket(Guid.NewGuid(), "consumer_phone", "Hello", DateTime.Now, DateTime.Now);
