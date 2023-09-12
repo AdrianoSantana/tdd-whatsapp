@@ -119,5 +119,11 @@ public class TicketRepositoryTest
     await context.AddAsync(new Ticket(myGuid, "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
     await context.SaveChangesAsync();
     var sut = new TicketRepository(context);
+
+    await sut.UpdateLastMessage(myGuid, "new_message");
+    var ticket = await context.Tickets.FirstOrDefaultAsync(x => x.Id == myGuid);
+
+    ticket.ShouldNotBeNull();
+    ticket.LastConsumerMessage.ShouldBe("new_message");
   }
 }

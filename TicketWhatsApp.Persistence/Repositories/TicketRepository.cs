@@ -29,8 +29,18 @@ public class TicketRepository : ITicketRepository
     return ticket;
   }
 
-  public Task UpdateLastMessage(Guid id, string text)
+  public async Task UpdateLastMessage(Guid id, string text)
   {
-    throw new NotImplementedException();
+    var result = await _context.Tickets.SingleOrDefaultAsync(x => x.Id.Equals(id));
+    if (result == null)
+    {
+      return;
+    }
+
+    result.UpdatedAt = DateTime.UtcNow;
+    result.LastConsumerMessage = text;
+
+    _context.Entry(result).CurrentValues.SetValues(result);
+    await _context.SaveChangesAsync();
   }
 }
