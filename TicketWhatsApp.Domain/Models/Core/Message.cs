@@ -1,5 +1,4 @@
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TicketWhatsApp.Domain.Models.Core
@@ -14,11 +13,11 @@ namespace TicketWhatsApp.Domain.Models.Core
       Text = text;
       Name = name;
     }
-  
+
     [BsonId]
     [BsonRepresentation((BsonType.ObjectId))]
     public string Id { get; set; } = String.Empty;
-    
+
     [BsonElement("from")]
     public string From { get; set; }
     [BsonElement("to")]
@@ -29,5 +28,8 @@ namespace TicketWhatsApp.Domain.Models.Core
     public string Text { get; set; }
     [BsonElement("name")]
     public string Name { get; set; }
+
+    [BsonElement("ticket_id")]
+    public string TicketId { get; set; }
   }
 }

@@ -22,6 +22,7 @@ public class HandleWebHookService : IHandleWebhookService
     else
       await _ticketService.UpdateLastMessage(ticket.Id, ticketMessage.Text);
 
+    message.TicketId = ticket.Id.ToString();
     await _messageRepository.Save(message, ticket);
     return ticketMessage;
   }

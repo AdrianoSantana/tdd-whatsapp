@@ -58,6 +58,9 @@ public class HandleWebHookServiceTest
     _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
     .ReturnsAsync(null as Ticket);
 
+    _ticketService.Setup(x => x.CreateTicket(It.IsAny<TicketMessage>()))
+.ReturnsAsync(_ticket);
+
     await _sut.Execute(_message);
 
     _ticketService.Verify(x => x.CreateTicket(It.IsAny<TicketMessage>()), Times.Exactly(1));
@@ -109,11 +112,13 @@ public class HandleWebHookServiceTest
     messageSpy.Text.ShouldBe(_message.Text);
     messageSpy.To.ShouldBe(_message.To);
     messageSpy.Name.ShouldBe(_message.Name);
+    messageSpy.TicketId.ShouldBe(_ticket.Id.ToString());
 
     ticketSpy.ConsumerPhone.ShouldBe(_ticket.ConsumerPhone);
     ticketSpy.Id.ShouldBe(_ticket.Id);
     ticketSpy.LastConsumerMessage.ShouldBe(_ticket.LastConsumerMessage);
     ticketSpy.CreatedAt.ShouldBe(_ticket.CreatedAt);
+
   }
 
   [Fact]
@@ -138,6 +143,9 @@ public class HandleWebHookServiceTest
   {
     _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
     .ReturnsAsync(null as Ticket);
+
+    _ticketService.Setup(x => x.CreateTicket(It.IsAny<TicketMessage>()))
+    .ReturnsAsync(_ticket);
 
     await _sut.Execute(_message);
 
