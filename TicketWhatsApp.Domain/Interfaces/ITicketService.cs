@@ -9,4 +9,5 @@ public interface ITicketService
 {
   Task<Ticket?> GetByUserPhone(string phone);
   Task<Ticket> CreateTicket(TicketMessage ticketMessage);
+  Task UpdateLastMessage(Guid id, string text);
 }

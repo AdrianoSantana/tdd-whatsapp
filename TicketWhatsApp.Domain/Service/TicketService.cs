@@ -25,4 +25,9 @@ public class TicketService : ITicketService
     notFinishedTickets = notFinishedTickets.OrderBy(x => x.CreatedAt).ToList();
     return notFinishedTickets.LastOrDefault();
   }
+
+  public Task UpdateLastMessage(Guid id, string text)
+  {
+    throw new NotImplementedException();
+  }
 }

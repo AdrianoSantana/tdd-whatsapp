@@ -116,6 +116,34 @@ public class HandleWebHookServiceTest
     ticketSpy.CreatedAt.ShouldBe(_ticket.CreatedAt);
   }
 
+  [Fact]
+  public async void Should_Call_Ticket_Service_Update_Last_Message_With_Correct_Params_If_Already_ExistsTicket()
+  {
+    string? message = null;
+    _ticketService.Setup(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()))
+    .Callback<Guid, string>((i, m) =>
+    {
+      message = m;
+    });
+
+    await _sut.Execute(_message);
+
+    message.ShouldNotBeNullOrEmpty();
+    message.ShouldBe(_message.Text);
+    _ticketService.Verify(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+  }
+
+  [Fact]
+  public async void Should_Not_Call_Ticket_Service_Update_Last_Message_With_Correct_Params_If_No_ExistsTicket()
+  {
+    _ticketService.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
+    .ReturnsAsync(null as Ticket);
+
+    await _sut.Execute(_message);
+
+    _ticketService.Verify(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()), Times.Never);
+  }
+
   private static Ticket GenerateMockTicket()
   {
     return new Ticket(new Guid("c8d3fdf9-7ce1-49b2-ab9a-28573cda20a6"), "user_phone", "message", new DateTime(), new DateTime());
