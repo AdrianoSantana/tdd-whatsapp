@@ -35,12 +35,12 @@ namespace TicketWhatsApp.Api.Tests
         Contacts = new List<PositusContact>() {
           new PositusContact {
             Profile = new PositusProfile { Name = "user_name "},
-            WaId = "consumer_number"
+            Wa_Id = "consumer_number"
           }
         }
       };
       _message = new Message("user_phone", "to_phone", "message", "user_name");
-      _ticketMessage = new TicketMessage("ticket_id", "user_phone", "to_phone", "message", "user_name");
+      _ticketMessage = new TicketMessage(Guid.NewGuid(), "user_phone", "to_phone", "message", "user_name");
 
       _handleWebhookService.Setup(x => x.Execute(_message)).ReturnsAsync(_ticketMessage);
     }
@@ -94,7 +94,7 @@ namespace TicketWhatsApp.Api.Tests
       receivedMessage.From.ShouldBe(_request.Messages[0].From);
       receivedMessage.Name.ShouldBe(_request.Contacts[0].Profile?.Name);
       receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
-      receivedMessage.To.ShouldBe(_request.Contacts[0].WaId);
+      receivedMessage.To.ShouldBe(_request.Contacts[0].Wa_Id);
     }
 
     [Fact]
@@ -117,7 +117,7 @@ namespace TicketWhatsApp.Api.Tests
       receivedMessage.From.ShouldBe(_request.Messages[0].From);
       receivedMessage.Name.ShouldBe("BOT");
       receivedMessage.Text.ShouldBe(_request.Messages[0].text.Body);
-      receivedMessage.To.ShouldBe(_request.Contacts[0].WaId);
+      receivedMessage.To.ShouldBe(_request.Contacts[0].Wa_Id);
     }
   }
 }

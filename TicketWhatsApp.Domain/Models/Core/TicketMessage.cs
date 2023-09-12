@@ -7,11 +7,11 @@ namespace TicketWhatsApp.Domain.Models.Core
 {
   public class TicketMessage : Message
   {
-    public TicketMessage(string? ticketId, string from, string to, string text, string name) : base(from, to, text, name)
+    public TicketMessage(Guid? ticketId, string from, string to, string text, string name) : base(from, to, text, name)
     {
-      TicketId = ticketId ?? Guid.NewGuid().ToString();
+      TicketId = ticketId ?? Guid.NewGuid();
     }
 
-    public string TicketId { get; set; }
+    public Guid TicketId { get; set; }
   }
 }

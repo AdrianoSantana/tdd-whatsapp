@@ -118,11 +118,11 @@ public class HandleWebHookServiceTest
 
   private static Ticket GenerateMockTicket()
   {
-    return new Ticket("ticket_id", "user_phone", "message", new DateTime(), new DateTime());
+    return new Ticket(new Guid("c8d3fdf9-7ce1-49b2-ab9a-28573cda20a6"), "user_phone", "message", new DateTime(), new DateTime());
   }
 
   private static TicketMessage GenerateMockTicketMessage()
   {
-    return new TicketMessage("ticket_id", "user_phone", "to_phone", "message", "user_name");
+    return new TicketMessage(new Guid("c8d3fdf9-7ce1-49b2-ab9a-28573cda20a6"), "user_phone", "to_phone", "message", "user_name");
   }
 }

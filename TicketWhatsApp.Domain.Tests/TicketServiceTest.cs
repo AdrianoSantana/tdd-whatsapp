@@ -19,9 +19,9 @@ public class TicketServiceTest
     _ticketRepository.Setup(x => x.GetByUserPhone(It.IsAny<string>()))
     .ReturnsAsync(new List<Ticket>() {
       _ticket,
-      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), TicketStatusId.Finished),
-      new Ticket(new Guid().ToString(), "consumer_phone", "last_message", DateTime.Now.AddDays(2), DateTime.Now.AddDays(3), TicketStatusId.Finished),
-      new Ticket(new Guid().ToString(), "another_consumer_phone", "last_message", DateTime.Now, DateTime.Now),
+      new Ticket(Guid.NewGuid(), "consumer_phone", "last_message", DateTime.Now.AddDays(1), DateTime.Now.AddDays(1), TicketStatusId.Finished),
+      new Ticket(Guid.NewGuid(), "consumer_phone", "last_message", DateTime.Now.AddDays(2), DateTime.Now.AddDays(3), TicketStatusId.Finished),
+      new Ticket(Guid.NewGuid(), "another_consumer_phone", "last_message", DateTime.Now, DateTime.Now),
     });
 
     sut = new TicketService(_ticketRepository.Object);
@@ -79,19 +79,19 @@ public class TicketServiceTest
   }
 
   [Fact]
-  public async void Should_get_last_and_finished_ticket_when_repository_returns_a_list_of_tickets()
+  public async void Should_get_last_and_not_finished_ticket_when_repository_returns_a_list_of_tickets()
   {
     var result = await sut.GetByUserPhone("consumer_phone");
 
     result.ShouldNotBeNull();
     result.LastConsumerMessage.ShouldBe("last_message");
-    result.ConsumerPhone.ShouldBe("consumer_phone");
-    result.CreatedAt.Day.ShouldBe(DateTime.Now.AddDays(2).Day);
-    result.UpdatedAt.Day.ShouldBe(DateTime.Now.AddDays(3).Day);
+    result.ConsumerPhone.ShouldBe("another_consumer_phone");
+    result.CreatedAt.Day.ShouldBe(DateTime.Now.Day);
+    result.UpdatedAt.Day.ShouldBe(DateTime.Now.Day);
   }
 
   private static Ticket createMockTicket()
   {
-    return new Ticket(new Guid().ToString(), "consumer_phone", "Hello", DateTime.Now, DateTime.Now);
+    return new Ticket(Guid.NewGuid(), "consumer_phone", "Hello", DateTime.Now, DateTime.Now);
   }
 }

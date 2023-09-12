@@ -7,7 +7,7 @@ namespace TicketWhatsApp.Domain.Models.Positus
     public PositusProfile? Profile { get; set; }
 
     [Required]
-    public string WaId { get; set; }
+    public string Wa_Id { get; set; }
   }
 
   public class PositusProfile

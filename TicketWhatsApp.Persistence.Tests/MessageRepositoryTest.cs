@@ -24,8 +24,8 @@ public class MessageRepositoryTest
   public async void Should_Save_Message_In_Mongo()
   {
     var sut = new MessageRepository(_testDbSettings, _testMongoClient);
-    var mockTicketMessage = new TicketMessage("any_id", "consumer_phone", "company_phone", "any_message", "consumer_name");
-    var mockTicket = new Ticket("any_id", "consumer_phone", "last_message", DateTime.Now, DateTime.Now);
+    var mockTicketMessage = new TicketMessage(Guid.NewGuid(), "consumer_phone", "company_phone", "any_message", "consumer_name");
+    var mockTicket = new Ticket(Guid.NewGuid(), "consumer_phone", "last_message", DateTime.Now, DateTime.Now);
     var result = await sut.Save(mockTicketMessage, mockTicket);
     result.ShouldNotBeNull();
     result.From.ShouldBe("consumer_phone");

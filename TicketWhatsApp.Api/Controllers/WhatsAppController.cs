@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using TicketWhatsApp.Api.DTOs;
 using TicketWhatsApp.Domain.Interfaces;
 using TicketWhatsApp.Domain.Models.Core;
@@ -17,7 +18,7 @@ public class WhatsAppController : ControllerBase
   }
 
   [HttpPost]
-  public async Task<IActionResult> HandleWebhook(PositusRequest request)
+  public async Task<IActionResult> HandleWebhook([FromBody] PositusRequest request)
   {
     if (!ModelState.IsValid)
     {
@@ -26,10 +27,11 @@ public class WhatsAppController : ControllerBase
 
     var message = new Message(
       request.Messages[0].From,
-      request.Contacts[0].WaId,
+      request.Contacts[0].Wa_Id,
       request.Messages[0].text.Body,
       request.Contacts[0].Profile?.Name ?? "BOT"
     );
+
 
     await _handleWebhookService.Execute(message);
     return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));

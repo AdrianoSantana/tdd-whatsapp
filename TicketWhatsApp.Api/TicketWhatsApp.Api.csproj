@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TicketWhatsApp.Domain\TicketWhatsApp.Domain.csproj" />
+    <ProjectReference Include="..\TicketWhatsApp.Persistence\TicketWhatsApp.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -12,7 +12,7 @@ public class TicketRepository : ITicketRepository
     this._context = _context;
   }
 
-  public async Task<Ticket?> GetById(string id)
+  public async Task<Ticket?> GetById(Guid id)
   {
     return await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id);
   }

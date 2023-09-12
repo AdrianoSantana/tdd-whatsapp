@@ -15,16 +15,16 @@ public class TicketRepositoryTest
     var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
 
     using var context = new TicketWhatsAppDbContext(dbOptions);
-    var myGuid = new Guid();
-    await context.AddAsync(new Ticket(myGuid.ToString(), "81995029086", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    var myGuid = Guid.NewGuid();
+    await context.AddAsync(new Ticket(myGuid, "81995029086", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
     await context.SaveChangesAsync();
 
     var sut = new TicketRepository(context);
 
-    var ticket = await sut.GetById(myGuid.ToString());
+    var ticket = await sut.GetById(myGuid);
 
     ticket.ShouldNotBeNull();
-    ticket.Id.ShouldBe(myGuid.ToString());
+    ticket.Id.ShouldBe(myGuid);
     ticket.ConsumerPhone.ShouldBe("81995029086");
     ticket.LastConsumerMessage.ShouldBe("Hello");
   }
@@ -38,7 +38,7 @@ public class TicketRepositoryTest
 
     var sut = new TicketRepository(context);
 
-    var ticket = await sut.GetById(myGuid.ToString());
+    var ticket = await sut.GetById(myGuid);
 
     ticket.ShouldBeNull();
   }
@@ -49,10 +49,10 @@ public class TicketRepositoryTest
     var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
     using var context = new TicketWhatsAppDbContext(dbOptions);
 
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "another_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "other_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "another_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "other_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
 
 
     await context.SaveChangesAsync();
@@ -71,10 +71,10 @@ public class TicketRepositoryTest
     var dbOptions = new DbContextOptionsBuilder<TicketWhatsAppDbContext>().UseInMemoryDatabase("ticketTest").Options;
     using var context = new TicketWhatsAppDbContext(dbOptions);
 
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "another_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
-    await context.AddAsync(new Ticket(Guid.NewGuid().ToString(), "other_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "551126264234", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "another_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
+    await context.AddAsync(new Ticket(Guid.NewGuid(), "other_phone", "Hello", DateTime.Now, DateTime.Now, TicketStatusId.Openned));
 
 
     await context.SaveChangesAsync();
@@ -94,7 +94,7 @@ public class TicketRepositoryTest
     using var context = new TicketWhatsAppDbContext(dbOptions);
 
     var sut = new TicketRepository(context);
-    var id = Guid.NewGuid().ToString();
+    var id = Guid.NewGuid();
     var result = await sut.Save(
       new Ticket(
         id, "consumer_phone", "last_message",

@@ -10,8 +10,8 @@ public class MessageRepository : IMessageRepository
 
   public MessageRepository(IDbSettings settings, IMongoClient mongoClient)
   {
-    var database = mongoClient.GetDatabase(settings.DatabaseName);
-    _messageCollection = database.GetCollection<Message>(settings.DbCollectionName);
+    var database = mongoClient.GetDatabase("messagesDB");
+    _messageCollection = database.GetCollection<Message>("messages");
   }
   public async Task<TicketMessage> Save(Message message, Ticket ticket)
   {

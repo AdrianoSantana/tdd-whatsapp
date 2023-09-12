@@ -9,7 +9,7 @@ public class Ticket
 
   }
   public Ticket(
-    string id,
+    Guid id,
     string consumerPhone,
     string lastConsumerMessage,
     DateTime createdAt,
@@ -26,7 +26,7 @@ public class Ticket
 
   }
 
-  public string Id { get; set; }
+  public Guid Id { get; set; }
   public string ConsumerPhone { get; set; }
   public string LastConsumerMessage { get; set; }
   public TicketStatusId StatusId { get; set; }
