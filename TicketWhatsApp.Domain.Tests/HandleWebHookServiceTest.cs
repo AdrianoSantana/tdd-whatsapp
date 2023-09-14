@@ -13,7 +13,7 @@ public class HandleWebHookServiceTest
   private readonly Mock<IMessageRepository> _messageRepository;
   private readonly IHandleWebhookService _sut;
   private readonly Message _message;
-  private readonly TicketMessage _ticketMessage;
+  private readonly Mock<IMessageAnswerService> _messageAnswerService;
 
   private readonly Ticket _ticket;
   public HandleWebHookServiceTest()
@@ -26,14 +26,16 @@ public class HandleWebHookServiceTest
 
     _messageRepository = new Mock<IMessageRepository>();
 
-    _ticketMessage = GenerateMockTicketMessage();
+    var ticketMessage = GenerateMockTicketMessage();
 
     _messageRepository.Setup(x => x.Save(It.IsAny<Message>(), It.IsAny<Ticket>()))
-    .ReturnsAsync(_ticketMessage);
+    .ReturnsAsync(ticketMessage);
 
     _message = new Message("user_phone", "to_phone", "message", "user_name");
 
-    _sut = new HandleWebHookService(_ticketService.Object, _messageRepository.Object);
+    _messageAnswerService = new Mock<IMessageAnswerService>();
+
+    _sut = new HandleWebHookService(_ticketService.Object, _messageRepository.Object, _messageAnswerService.Object);
   }
 
   [Fact]
@@ -150,6 +152,23 @@ public class HandleWebHookServiceTest
     await _sut.Execute(_message);
 
     _ticketService.Verify(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()), Times.Never);
+  }
+
+  [Fact]
+  public async void Should_Call_Handle_Answer_Service_With_Correct_Params()
+  {
+    string? text = null;
+    _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>()))
+      .Callback<string>(t =>
+      {
+        text = t;
+      });
+    
+    var result = await _sut.Execute(_message);
+
+    text.ShouldNotBeNull();
+    text.ShouldBe(result.Text);
+    _messageAnswerService.Verify(x => x.Generate(It.IsAny<string>()), Times.Once);
   }
 
   private static Ticket GenerateMockTicket()
