@@ -11,10 +11,18 @@ public class MessageAnswerService: IMessageAnswerService
     }
     public async Task<string> Generate(string text, bool isFirstMessage)
     {
-        if (isFirstMessage) 
-            return Phrases.GREETINGS_TO_THE_CONSUMER;
+        try
+        {
+            if (isFirstMessage) 
+                return Phrases.GREETINGS_TO_THE_CONSUMER;
 
-        var answer = await _getInfoService.Execute(text);
-        return answer;
+            var answer = await _getInfoService.Execute(text);
+            return answer;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return Phrases.DEFAULT_ERROR_MESSAGE;
+        }
     }
 }

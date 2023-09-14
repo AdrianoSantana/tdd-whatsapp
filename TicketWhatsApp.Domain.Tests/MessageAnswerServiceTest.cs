@@ -43,11 +43,23 @@ public class MessageAnswerServiceTest
                 topic = t;
             });
 
-        await _sut.Generate("first_message", false);
+        await _sut.Generate("search_message", false);
 
         topic.ShouldNotBeNull();
-        topic.ShouldBe("first_message");
+        topic.ShouldBe("search_message");
         _getInfoService.Verify(x => x.Execute(It.IsAny<string>()), Times.Once());
 
+    }
+
+    [Fact]
+    public async void Should_return_an_default_message_error_if_get_info_service_throws()
+    {
+        _getInfoService.Setup(x => x.Execute(It.IsAny<string>()))
+            .ThrowsAsync(new Exception());
+
+        var result = await _sut.Generate("search_message", false);
+        
+        result.ShouldNotBeNullOrEmpty();
+        result.ShouldBe(Phrases.DEFAULT_ERROR_MESSAGE);
     }
 }
