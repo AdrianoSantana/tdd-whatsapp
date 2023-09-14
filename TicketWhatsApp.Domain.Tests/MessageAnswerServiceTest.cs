@@ -1,11 +1,22 @@
+using Moq;
 using Shouldly;
+using TicketWhatsApp.Domain.Interfaces;
 using TicketWhatsApp.Domain.Service;
 
 namespace TicketWhatsApp.Domain.Tests;
 
 public class MessageAnswerServiceTest
 {
-    private readonly MessageAnswerService _sut = new();
+    private readonly Mock<IGetInfoService> _getInfoService = new Mock<IGetInfoService>();
+    private readonly IMessageAnswerService _sut;
+
+    public MessageAnswerServiceTest()
+    {
+        _getInfoService.Setup(x => x.Execute(It.IsAny<string>()))
+            .ReturnsAsync("result_for_search");
+        
+        _sut = new MessageAnswerService(_getInfoService.Object);
+    }
 
     [Fact]
     public async void Should_return_greetings_message_if_is_first_message_for_consumer()
@@ -21,5 +32,22 @@ public class MessageAnswerServiceTest
         result.ShouldNotBe(Phrases.GREETINGS_TO_THE_CONSUMER);
         result.ShouldNotBeNullOrEmpty();
     }
-    
+
+    [Fact]
+    public async void Should_call_Get_Info_Service_With_Correct_Params()
+    {
+        string? topic = null;
+        _getInfoService.Setup(x => x.Execute(It.IsAny<string>()))
+            .Callback<string>(t =>
+            {
+                topic = t;
+            });
+
+        await _sut.Generate("first_message", false);
+
+        topic.ShouldNotBeNull();
+        topic.ShouldBe("first_message");
+        _getInfoService.Verify(x => x.Execute(It.IsAny<string>()), Times.Once());
+
+    }
 }
