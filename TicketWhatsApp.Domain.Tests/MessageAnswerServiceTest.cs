@@ -52,7 +52,7 @@ public class MessageAnswerServiceTest
     }
 
     [Fact]
-    public async void Should_return_an_default_message_error_if_get_info_service_throws()
+    public async void Should_return_a_default_message_error_if_get_info_service_throws()
     {
         _getInfoService.Setup(x => x.Execute(It.IsAny<string>()))
             .ThrowsAsync(new Exception());
@@ -61,5 +61,16 @@ public class MessageAnswerServiceTest
         
         result.ShouldNotBeNullOrEmpty();
         result.ShouldBe(Phrases.DEFAULT_ERROR_MESSAGE);
+    }
+    
+    [Fact]
+    public async void Should_return_correct_message_if_get_info_service_returns_a_message()
+    {
+        _getInfoService.Setup(x => x.Execute(It.IsAny<string>())).ReturnsAsync("answer_search");
+
+        var result = await _sut.Generate("search_message", false);
+
+        result.ShouldNotBeNullOrEmpty();
+        result.ShouldBe("answer_search");
     }
 }
