@@ -4,8 +4,9 @@ namespace TicketWhatsApp.Domain.Service;
 
 public class MessageAnswerService: IMessageAnswerService
 {
-    public Task<string> Generate(string text)
+    public async Task<string> Generate(string text, bool isFirstMessage)
     {
-        throw new NotImplementedException();
+        if (isFirstMessage) return Phrases.GREETINGS_TO_THE_CONSUMER;
+        return Phrases.DEFAULT_ERROR_MESSAGE;
     }
 }

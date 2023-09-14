@@ -158,7 +158,7 @@ public class HandleWebHookServiceTest
   public async void Should_Call_Handle_Answer_Service_With_Correct_Params()
   {
     string? text = null;
-    _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>()))
+    _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>(), It.IsAny<bool>()))
       .Callback<string>(t =>
       {
         text = t;
@@ -168,7 +168,7 @@ public class HandleWebHookServiceTest
 
     text.ShouldNotBeNull();
     text.ShouldBe(result.Text);
-    _messageAnswerService.Verify(x => x.Generate(It.IsAny<string>()), Times.Once);
+    _messageAnswerService.Verify(x => x.Generate(It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
   }
 
   private static Ticket GenerateMockTicket()
