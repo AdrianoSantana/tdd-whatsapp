@@ -14,6 +14,7 @@ public class HandleWebHookServiceTest
   private readonly IHandleWebhookService _sut;
   private readonly Message _message;
   private readonly Mock<IMessageAnswerService> _messageAnswerService;
+  private readonly Mock<ISendMessageService> _sendMessageService;
 
   private readonly Ticket _ticket;
   public HandleWebHookServiceTest()
@@ -34,8 +35,11 @@ public class HandleWebHookServiceTest
     _message = new Message("user_phone", "to_phone", "message", "user_name");
 
     _messageAnswerService = new Mock<IMessageAnswerService>();
+    _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>(), false)).ReturnsAsync("message_to_consumer");
 
-    _sut = new HandleWebHookService(_ticketService.Object, _messageRepository.Object, _messageAnswerService.Object);
+    _sendMessageService = new Mock<ISendMessageService>();
+
+    _sut = new HandleWebHookService(_ticketService.Object, _messageRepository.Object, _messageAnswerService.Object, _sendMessageService.Object);
   }
 
   [Fact]
@@ -159,7 +163,7 @@ public class HandleWebHookServiceTest
   {
     string? text = null;
     _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>(), It.IsAny<bool>()))
-      .Callback<string>(t =>
+      .Callback<string, bool>((t, b) =>
       {
         text = t;
       });
@@ -169,6 +173,27 @@ public class HandleWebHookServiceTest
     text.ShouldNotBeNull();
     text.ShouldBe(result.Text);
     _messageAnswerService.Verify(x => x.Generate(It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
+  }
+
+  [Fact]
+  public async void Should_call_send_message_Service_with_correct_params()
+  {
+    Message? message = null;
+    _sendMessageService.Setup(x => x.Send(It.IsAny<Message>()))
+      .Callback<Message>((m) =>
+      {
+        message = m;
+      });
+
+    await _sut.Execute(_message);
+    message.ShouldNotBeNull();
+    message.To.ShouldBe(_message.From);
+    message.From.ShouldBe(_message.To);
+    message.Text.ShouldBe("message_to_consumer");
+    message.TicketId.ShouldBe(_message.TicketId);
+    message.Name.ShouldBe("BOT");
+
+    _sendMessageService.Verify(x => x.Send(It.IsAny<Message>()), Times.Once());
   }
 
   private static Ticket GenerateMockTicket()

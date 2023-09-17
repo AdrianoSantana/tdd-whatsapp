@@ -7,12 +7,14 @@ public class HandleWebHookService : IHandleWebhookService
   private readonly ITicketService _ticketService;
   private readonly IMessageRepository _messageRepository;
   private readonly IMessageAnswerService _messageAnswerService;
+  private readonly ISendMessageService _sendMessageService;
 
-  public HandleWebHookService(ITicketService ticketService, IMessageRepository messageRepository, IMessageAnswerService messageAnswerService)
+  public HandleWebHookService(ITicketService ticketService, IMessageRepository messageRepository, IMessageAnswerService messageAnswerService, ISendMessageService sendMessageService)
   {
     _ticketService = ticketService;
     _messageRepository = messageRepository;
     _messageAnswerService = messageAnswerService;
+    _sendMessageService = sendMessageService;
   }
   public async Task<TicketMessage> Execute(Message message)
   {
@@ -31,7 +33,14 @@ public class HandleWebHookService : IHandleWebhookService
     message.TicketId = ticket.Id.ToString();
     await _messageRepository.Save(message, ticket);
 
-    string consumerMessage = await _messageAnswerService.Generate(ticketMessage.Text, isFirstMessage);
+    string messageToConsumerText = await _messageAnswerService.Generate(ticketMessage.Text, isFirstMessage);
+
+    var messageToConsumer = new Message(message.To, message.From, messageToConsumerText, "BOT")
+    {
+      TicketId = message.TicketId
+    };
+
+    await _sendMessageService.Send(messageToConsumer);
     return ticketMessage;
   }
 }
