@@ -132,7 +132,7 @@ public class HandleWebHookServiceTest
   {
     string? message = null;
     _ticketService.Setup(x => x.UpdateLastMessage(It.IsAny<Guid>(), It.IsAny<string>()))
-    .Callback<Guid, string>((i, m) =>
+    .Callback<Guid, string>((_, m) =>
     {
       message = m;
     });
@@ -163,7 +163,7 @@ public class HandleWebHookServiceTest
   {
     string? text = null;
     _messageAnswerService.Setup(x => x.Generate(It.IsAny<string>(), It.IsAny<bool>()))
-      .Callback<string, bool>((t, b) =>
+      .Callback<string, bool>((t, _) =>
       {
         text = t;
       });
