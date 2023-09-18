@@ -19,8 +19,11 @@ builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configu
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IGetInfoService, MockGetInfoService>();
 builder.Services.AddScoped<IHandleWebhookService, HandleWebHookService>();
-
+builder.Services.AddScoped<IMessageAnswerService, MessageAnswerService>();
+builder.Services.AddScoped<ISendMessageService, PositusSendMessageService>();
+builder.Services.AddScoped<HttpClient>();
 
 var connStrings = "DataSource=myDb.db";
 var conn = new SqliteConnection(connStrings);

@@ -20,20 +20,28 @@ public class WhatsAppController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> HandleWebhook([FromBody] PositusRequest request)
   {
-    if (!ModelState.IsValid)
+    try
     {
-      return BadRequest(new HandleWebhookResponse("Verifique os parâmetros enviados."));
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(new HandleWebhookResponse("Verifique os parâmetros enviados."));
+      }
+
+      var message = new Message(
+        request.Messages[0].From,
+        request.Contacts[0].Wa_Id,
+        request.Messages[0].text.Body,
+        request.Contacts[0].Profile?.Name ?? "BOT"
+      );
+
+
+      await _handleWebhookService.Execute(message);
+      return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));
     }
-
-    var message = new Message(
-      request.Messages[0].From,
-      request.Contacts[0].Wa_Id,
-      request.Messages[0].text.Body,
-      request.Contacts[0].Profile?.Name ?? "BOT"
-    );
-
-
-    await _handleWebhookService.Execute(message);
-    return Ok(new HandleWebhookResponse("Mensagem recebida com sucesso."));
+    catch (System.Exception ex)
+    {
+      Console.WriteLine(ex);
+      return BadRequest();
+    }
   }
 }
